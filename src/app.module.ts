@@ -14,6 +14,7 @@ import { Report } from './reports/report.entity';
       type: 'sqlite',
       database: 'db.sqlite',
       entities: [User, Report],
+      // only run true on develop
       synchronize: true,
     }),
     UsersModule,
