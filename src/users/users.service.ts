@@ -16,4 +16,31 @@ export class UsersService {
 
     return this.repo.save(user);
   }
+
+  findOne(id: number) {
+    return this.repo.findOneBy({ id });
+  }
+
+  find(email: string) {
+    return this.repo.find({ where: { email } });
+  }
+
+  async update(id: number, attrs: Partial<User>) {
+    try {
+      const user = await this.findOne(id);
+      Object.assign(user, attrs);
+      return this.repo.save(user);
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  async remove(id: number) {
+    try {
+      const user = await this.findOne(id);
+      return this.repo.remove(user);
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 }
