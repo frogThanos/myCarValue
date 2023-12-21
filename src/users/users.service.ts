@@ -10,7 +10,7 @@ export class UsersService {
   create(email: string, password: string) {
     // We need to create an instance of the User Entity
     // before we save it using the repo. If we save it as
-    // a plain object typeorm hooks defined in the User Entity
+    // a plain object, typeorm hooks defined in the User Entity
     // won't be executed.
     const user = this.repo.create({ email, password });
 
