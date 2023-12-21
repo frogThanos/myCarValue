@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -24,9 +25,12 @@ export class UsersController {
   // Nestjs does not automatically pars strings into numbers
   // we need to do that ourselves
   @Get('/:id')
-  findUser(@Param('id') id: string) {
+  async findUser(@Param('id') id: string) {
     const parsId = parseInt(id);
-    return this.usersService.findOne(parsId);
+    const user = await this.usersService.findOne(parsId);
+    if (!user) {
+      throw new NotFoundException('User Not Found');
+    }
   }
 
   @Get()
