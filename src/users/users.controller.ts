@@ -9,11 +9,11 @@ import {
   Delete,
   NotFoundException,
   UseInterceptors,
-  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { SerializeInterceptor } from '../interceptors/serialize.interceptor';
 
 @Controller('auth')
 export class UsersController {
@@ -26,9 +26,10 @@ export class UsersController {
 
   // Nestjs does not automatically pars strings into numbers
   // we need to do that ourselves
-  @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(SerializeInterceptor)
   @Get('/:id')
   async findUser(@Param('id') id: string) {
+    console.log('Handler is running');
     const parsId = parseInt(id);
     const user = await this.usersService.findOne(parsId);
     if (!user) {
