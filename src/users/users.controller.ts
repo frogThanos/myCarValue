@@ -16,6 +16,7 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 
 @Controller('auth')
+@Serialize(UserDto)
 export class UsersController {
   constructor(private usersService: UsersService) {}
   @Post('/signup')
@@ -26,10 +27,8 @@ export class UsersController {
 
   // Nestjs does not automatically pars strings into numbers
   // we need to do that ourselves
-  @Serialize(UserDto)
   @Get('/:id')
   async findUser(@Param('id') id: string) {
-    console.log('Handler is running');
     const parsId = parseInt(id);
     const user = await this.usersService.findOne(parsId);
     if (!user) {
