@@ -28,6 +28,11 @@ export class UsersController {
     this.authService.signUp(body.email, body.password);
   }
 
+  @Post('/signin')
+  signIn(@Body() body: CreateUserDto) {
+    return this.authService.signIn(body.email, body.password);
+  }
+
   // Nestjs does not automatically pars strings into numbers
   // we need to do that ourselves
   @Get('/:id')
