@@ -8,6 +8,7 @@ import {
   Query,
   Delete,
   NotFoundException,
+  Session,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -24,13 +25,17 @@ export class UsersController {
     private authService: AuthService,
   ) {}
   @Post('/signup')
-  createUser(@Body() body: CreateUserDto) {
-    this.authService.signUp(body.email, body.password);
+  async createUser(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signUp(body.email, body.password);
+    session.userId = user.id;
+    return user;
   }
 
   @Post('/signin')
-  signIn(@Body() body: CreateUserDto) {
-    return this.authService.signIn(body.email, body.password);
+  async signIn(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signIn(body.email, body.password);
+    session.userId = user.id;
+    return user;
   }
 
   // Nestjs does not automatically pars strings into numbers
